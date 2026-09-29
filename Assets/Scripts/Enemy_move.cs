@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,10 +21,10 @@ public class Enemy_move : MonoBehaviour
 
     void FixedUpdate()
     {
-        //¿òÁ÷ÀÓ
+        //ì›€ì§ì„
         rigid.velocity = new Vector2(nextmove, rigid.velocity.y);
 
-        //³¶¶°·¯Áö Ã¼Å©
+        //ë‚­ë– ëŸ¬ì§€ ì²´í¬
         Vector2 front_vector = new Vector2(rigid.position.x + (nextmove*0.4f), rigid.position.y);
 
         Debug.DrawRay(front_vector, Vector3.down, new Color(0, 1, 0));
@@ -38,18 +38,18 @@ public class Enemy_move : MonoBehaviour
 
 
     }
-    void Think() //¹İº¹ÀûÀ¸·Î µ¹¾Æ´Ù´Ï°Ô ÇÏ´Â ÇÔ¼ö
+    void Think() //ë°˜ë³µì ìœ¼ë¡œ ëŒì•„ë‹¤ë‹ˆê²Œ í•˜ëŠ” í•¨ìˆ˜
     {   
-        //´ÙÀ½È°µ¿ ¼³Á¤
-        nextmove = Random.Range(-1, 2); //-1 0 1 Áß¿¡ ·£´ıÀ¸·Î ¼Óµµ °áÁ¤
-        //¾Ö´Ï¸ŞÀÌ¼Ç Ãß°¡
+        //ë‹¤ìŒí™œë™ ì„¤ì •
+        nextmove = Random.Range(-1, 2); //-1 0 1 ì¤‘ì— ëœë¤ìœ¼ë¡œ ì†ë„ ê²°ì •
+        //ì• ë‹ˆë©”ì´ì…˜ ì¶”ê°€
         animator.SetInteger("work_speed", nextmove);
-        //¹æÇâ ÀüÈ¯
+        //ë°©í–¥ ì „í™˜
         if (nextmove != 0)
         {
           spriterenderer.flipX = nextmove == 1;
         }
-        //Àç±Í
+        //ì¬ê·€
         float next_think = Random.Range(2f, 5f);
         Invoke("Think", next_think);
     }
@@ -65,17 +65,17 @@ public class Enemy_move : MonoBehaviour
     public void Enemy_Damaged()
     {   
 
-        //Ãæµ¹ ÈÄ ¹Ğ¸² ¹æÁö
+        //ì¶©ëŒ í›„ ë°€ë¦¼ ë°©ì§€
         gameObject.layer = 8;
-        //Äİ¶óÀÌ´õ ºñÈ°¼ºÈ­
+        //ì½œë¼ì´ë” ë¹„í™œì„±í™”
         capsulecollider.enabled = false;
-        //»ö±ò ¹Ù²Ù±â
+        //ìƒ‰ê¹” ë°”ê¾¸ê¸°
         spriterenderer.color = new Color(1, 1, 1, 0.4f);
-        //µÚÁı±â
+        //ë’¤ì§‘ê¸°
         spriterenderer.flipY = true;
-        //Á¡ÇÁ ¸ğ¼Ç
+        //ì í”„ ëª¨ì…˜
         rigid.AddForce(Vector2.up * 3, ForceMode2D.Impulse);
-        //ÈÄ¿¡ ¶³¾îÁö°í »ç¶ó Áü
+        //í›„ì— ë–¨ì–´ì§€ê³  ì‚¬ë¼ ì§
         Invoke("De_Active", 5);
     }
 

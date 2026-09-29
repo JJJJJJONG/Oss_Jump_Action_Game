@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,7 +66,7 @@ public class Data_Save : MonoBehaviour
             RankScoreText[i].text = string.Format("{0:N3}", rankScore[i]);
             rankName[i] = PlayerPrefs.GetString(i.ToString() + "BestName");
             RankNameText[i].text = string.Format(rankName[i]);
-            //1À§ ³ë¶õ»öÀ¸·Î Ç¥½Ã
+            //1ìœ„ ë…¸ëž€ìƒ‰ìœ¼ë¡œ í‘œì‹œ
             if (RankScoreCurrent.text == RankScoreText[i].text)
             {
                 Color Rank = new Color(255, 225, 0);

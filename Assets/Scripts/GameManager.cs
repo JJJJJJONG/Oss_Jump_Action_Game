@@ -1,4 +1,4 @@
-using Microsoft.Unity.VisualStudio.Editor;
+ï»¿using Microsoft.Unity.VisualStudio.Editor;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -11,7 +11,7 @@ using Image = UnityEngine.UI.Image;
 
 public class GameManager : MonoBehaviour
 {
-    //Á¡¼ö¿Í ½ºÅ×ÀÌÁö °ü¸®
+    //ì ìˆ˜ì™€ ìŠ¤í…Œì´ì§€ ê´€ë¦¬
     public int totalpoint;
     public int totalpoint2;
     public int stagepoint;
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     public GameObject UI_retired;
     
 
-    //»óÁ¡
+    //ìƒì 
     public GameObject[] store_page;
     public Text UI_money;
     public Text UI_money2;
@@ -79,8 +79,8 @@ public class GameManager : MonoBehaviour
                 jungmoon.SetActive(false);
             }
 
-            //½ºÅ×ÀÌÁö ÀüÈ¯
-            if (stageindex < stages.Length - 1) //½ºÅ×ÀÌÁö ·À½º°¡ ÃÑ 2
+            //ìŠ¤í…Œì´ì§€ ì „í™˜
+            if (stageindex < stages.Length - 1) //ìŠ¤í…Œì´ì§€ ë ìŠ¤ê°€ ì´ 2
             {
                 stages[stageindex].SetActive(false);
                 stageindex++;
@@ -95,9 +95,9 @@ public class GameManager : MonoBehaviour
                 //UI_stage.text = "STAGE" + (stageindex + 1);
             }
 
-            else //°ÔÀÓ Å¬¸®¾î
+            else //ê²Œì„ í´ë¦¬ì–´
             { 
-                //½Ã°£ Á¤Áö
+                //ì‹œê°„ ì •ì§€
                 Time.timeScale = 0;
            
                 veiw_button();
@@ -114,8 +114,8 @@ public class GameManager : MonoBehaviour
                 jeongmoon.SetActive(true);
                 jungmoon.SetActive(false);
             }
-            //½ºÅ×ÀÌÁö ÀüÈ¯
-            if (stageindex < stages2.Length - 1) //½ºÅ×ÀÌÁö ·À½º°¡ ÃÑ 3
+            //ìŠ¤í…Œì´ì§€ ì „í™˜
+            if (stageindex < stages2.Length - 1) //ìŠ¤í…Œì´ì§€ ë ìŠ¤ê°€ ì´ 3
             {
                
                 stages2[stageindex].SetActive(false);
@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
 
                 //UI_stage2.text = "STAGE" + (stageindex + 1);
             }
-            else //°ÔÀÓ Å¬¸®¾î
+            else //ê²Œì„ í´ë¦¬ì–´
             {
               
                 if (stageindex == 1)
@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
                     jungmoon.SetActive(true);
                 }
 
-                //½Ã°£ Á¤Áö
+                //ì‹œê°„ ì •ì§€
                 Time.timeScale = 0;
                 veiw_button();
             }
@@ -160,16 +160,16 @@ public class GameManager : MonoBehaviour
                 UI_health[health].color = new Color(1, 0, 0, 0.4f);
             }
 
-            //health°¡ 0ÀÏ ¶§
+            //healthê°€ 0ì¼ ë•Œ
             else
             {
-                //¸ğµç »ı¸íÀÌ ´ÙÇßÀ» ¶§
+                //ëª¨ë“  ìƒëª…ì´ ë‹¤í–ˆì„ ë•Œ
                 UI_health[0].color = new Color(1, 0, 0, 0.4f);
-                //ÇÃ·¹ÀÌ¾î Á×À½ È¿°ú
+                //í”Œë ˆì´ì–´ ì£½ìŒ íš¨ê³¼
                 player_move.On_Die();
-                //Á×À½ UI
+                //ì£½ìŒ UI
 
-                //Àç½Ãµµ UI
+                //ì¬ì‹œë„ UI
                 veiw_button();
             }
         }
@@ -182,16 +182,16 @@ public class GameManager : MonoBehaviour
                 UI_health2[health].color = new Color(1, 0, 0, 0.4f);
             }
 
-            //health°¡ 0ÀÏ ¶§
+            //healthê°€ 0ì¼ ë•Œ
             else
             {
-                //¸ğµç »ı¸íÀÌ ´ÙÇßÀ» ¶§
+                //ëª¨ë“  ìƒëª…ì´ ë‹¤í–ˆì„ ë•Œ
                 UI_health2[0].color = new Color(1, 0, 0, 0.4f);
-                //ÇÃ·¹ÀÌ¾î Á×À½ È¿°ú
+                //í”Œë ˆì´ì–´ ì£½ìŒ íš¨ê³¼
                 player_move.On_Die();
-                //Á×À½ UI
+                //ì£½ìŒ UI
 
-                //Àç½Ãµµ UI
+                //ì¬ì‹œë„ UI
                 veiw_button();
             }
         }
@@ -200,16 +200,16 @@ public class GameManager : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {   
-        //³«ÇÏ½Ã »ı¸í·Â °¨¼Ò 
+        //ë‚™í•˜ì‹œ ìƒëª…ë ¥ ê°ì†Œ 
         if(collision.gameObject.tag == "Player")
         {   
-            //¸®½ºÆù
+            //ë¦¬ìŠ¤í°
             if (health > 1)
             {   
                 Player_Respawn();
             }
 
-            //»ı¸í·Â °¨¼Ò
+            //ìƒëª…ë ¥ ê°ì†Œ
             Health_Down();
         }
     }
@@ -289,19 +289,19 @@ public class GameManager : MonoBehaviour
        
         if (price > totalpoint)
         {
-            Debug.Log("½ÇÇàµÊ.");
+            Debug.Log("ì‹¤í–‰ë¨.");
             Play_Sound(1);
         }
 
         else if (price <= totalpoint)
         {
-            //±¸ÀÔ ¿Ï·á Ã¢ UI
+            //êµ¬ì… ì™„ë£Œ ì°½ UI
 
             if (index == 0)
             {
                 Buy_Button[0].SetActive(true);
                 Play_Sound(0);
-                //±¸Çö
+                //êµ¬í˜„
                 change_UI();
                 health += 1;
                 change += 1;
@@ -324,7 +324,7 @@ public class GameManager : MonoBehaviour
                 player_move.jumppower += 2;
                 totalpoint = totalpoint - item_price[2];
             }
-            else if (index == 3)//°úÀá
+            else if (index == 3)//ê³¼ì 
             {
                 Buy_Button[3].SetActive(true);
                 Play_Sound(0);

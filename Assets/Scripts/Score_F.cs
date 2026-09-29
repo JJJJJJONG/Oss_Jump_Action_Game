@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
@@ -47,7 +47,7 @@ public class Score_F: MonoBehaviour
             }
         }
     }
-    void OnCollisionEnter2D(Collision2D Circle)//∞¯∞˙ ¿Âæ÷π∞ √Êµπ
+    void OnCollisionEnter2D(Collision2D Circle)//Í≥µÍ≥º Ïû•Ïï†Î¨º Ï∂©Îèå
     {
         if (Circle.gameObject.tag == "Player")
         {

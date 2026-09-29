@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,60 +34,60 @@ public class Player_move : MonoBehaviour
 
     void Update()
     {
-        //Á¡ÇÁ
+        //ì í”„
         if (Input.GetButtonDown("Jump") && !animator.GetBool("is_jump"))
         {
-            //Á¡ÇÁ µ¿·Â
+            //ì í”„ ë™ë ¥
             rigid.AddForce(Vector2.up * jumppower, ForceMode2D.Impulse);
-            //Á¡ÇÁ ¾Ö´Ï¸ŞÀÌ¼Ç
+            //ì í”„ ì• ë‹ˆë©”ì´ì…˜
             animator.SetBool("is_jump", true);
 
             Play_Sound("JUMP");
 
         }
 
-        //¸ØÃß´Â ¼Óµµ
+        //ë©ˆì¶”ëŠ” ì†ë„
         if (Input.GetButtonUp("Horizontal"))
         {
             rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.01f, rigid.velocity.y);
         }
 
-        //¹æÇâ ÀüÈ¯
+        //ë°©í–¥ ì „í™˜
         if (Input.GetButton("Horizontal"))
         {
             spriterenderer.flipX = Input.GetAxisRaw("Horizontal") == -1;
         }
 
-        //¸ØÃã°ú ¿òÁ÷ÀÓ ¾Ö´Ï¸ŞÀÌ¼Ç
+        //ë©ˆì¶¤ê³¼ ì›€ì§ì„ ì• ë‹ˆë©”ì´ì…˜
         if (Mathf.Abs(rigid.velocity.x) < 0.3f)
         {
-            animator.SetBool("is_walk", false); //¼Óµµ°¡ 0.3º¸´Ù ÀÛÀ¸¸é is_walk OFF
+            animator.SetBool("is_walk", false); //ì†ë„ê°€ 0.3ë³´ë‹¤ ì‘ìœ¼ë©´ is_walk OFF
         }
         else
         {
-            animator.SetBool("is_walk", true); //¼Óµµ°¡ 0.3º¸´Ù Å©¸é is_walk ON
+            animator.SetBool("is_walk", true); //ì†ë„ê°€ 0.3ë³´ë‹¤ í¬ë©´ is_walk ON
         }
     }
     void FixedUpdate()
     {
-        //¿òÁ÷ÀÓ ¼Óµµ
+        //ì›€ì§ì„ ì†ë„
         float h = Input.GetAxisRaw("Horizontal");
 
         rigid.AddForce(Vector2.right * h, ForceMode2D.Impulse);
 
-        //ÃÖ´ë ¼Óµµ ¼³Á¤
+        //ìµœëŒ€ ì†ë„ ì„¤ì •
 
-        if (rigid.velocity.x > maxspeed) //¿À¸¥ÂÊ ÃÖ´ë ¼Óµµ
+        if (rigid.velocity.x > maxspeed) //ì˜¤ë¥¸ìª½ ìµœëŒ€ ì†ë„
         {
             rigid.velocity = new Vector2(maxspeed, rigid.velocity.y);
         }
 
-        else if (rigid.velocity.x < maxspeed * (-1)) //¿ŞÂÊ ÃÖ´ë ¼Óµµ
+        else if (rigid.velocity.x < maxspeed * (-1)) //ì™¼ìª½ ìµœëŒ€ ì†ë„
         {
             rigid.velocity = new Vector2(maxspeed * (-1), rigid.velocity.y);
         }
 
-        //ÂøÁö
+        //ì°©ì§€
         if (rigid.velocity.y < 0)
         {
             Debug.DrawRay(rigid.position, Vector3.down, new Color(0, 1, 2));
@@ -110,12 +110,12 @@ public class Player_move : MonoBehaviour
     {
 
         if (collision.gameObject.tag == "Enemy")
-        {   //¸ó½ºÅÍ °ø°İ
+        {   //ëª¬ìŠ¤í„° ê³µê²©
             if (rigid.velocity.y < 0 && transform.position.y > collision.transform.position.y)
             {
                 On_Attack(collision.transform);
             }
-            else //µ¥¹ÌÁö ÀÔÀ½
+            else //ë°ë¯¸ì§€ ì…ìŒ
             {
                 On_Damaged(collision.transform.position);
             }
@@ -133,12 +133,12 @@ public class Player_move : MonoBehaviour
     }
 
 
-    void OnTriggerEnter2D(Collider2D collision) //µ¿Àü, ±ê¹ß ÀÎ½ºÆåÅÍ¿¡¼­ is_trigger Ã¼Å©
+    void OnTriggerEnter2D(Collider2D collision) //ë™ì „, ê¹ƒë°œ ì¸ìŠ¤í™í„°ì—ì„œ is_trigger ì²´í¬
     {
         if (collision.gameObject.tag == "Item")
         {
             Play_Sound("ITEM");
-            //Á¡¼ö
+            //ì ìˆ˜
 
             bool is_gold = collision.gameObject.name.Contains("gold");
             if (is_gold)
@@ -152,13 +152,13 @@ public class Player_move : MonoBehaviour
             if (is_bronze)
                 gamemanager.stagepoint += 50;
 
-            //µ¿Àü »ç¶óÁö°Ô
+            //ë™ì „ ì‚¬ë¼ì§€ê²Œ
             collision.gameObject.SetActive(false);
         }
 
         else if (collision.gameObject.tag == "Finish")
         {
-            //´ÙÀ½ ´Ü°è·Î ³Ñ¾î°¨
+            //ë‹¤ìŒ ë‹¨ê³„ë¡œ ë„˜ì–´ê°
             gamemanager.Next_Stage();
 
             Play_Sound("FINISH");
@@ -169,10 +169,10 @@ public class Player_move : MonoBehaviour
 
     void On_Attack(Transform enemy)
     {
-        //Á¡¼ö
+        //ì ìˆ˜
         gamemanager.stagepoint += 100;
 
-        //ÇÃ·¹ÀÌ¾î Á¡ÇÁ ¹°¸®
+        //í”Œë ˆì´ì–´ ì í”„ ë¬¼ë¦¬
         rigid.AddForce(Vector2.up * 15, ForceMode2D.Impulse);
 
         Enemy_move enemy_Move = enemy.GetComponent<Enemy_move>();
@@ -185,7 +185,7 @@ public class Player_move : MonoBehaviour
     {
         int direct = transform.position.x - targetpos.x > 0 ? 1 : -1;
 
-        //Ãæµ¹¹°¸® ±¸Çö
+        //ì¶©ëŒë¬¼ë¦¬ êµ¬í˜„
         rigid.AddForce(new Vector2(direct, 0) * 15, ForceMode2D.Impulse);
     }
 
@@ -195,24 +195,24 @@ public class Player_move : MonoBehaviour
     {
         Play_Sound("DAMAGED");
 
-        //»ı¸í·Â
+        //ìƒëª…ë ¥
         gamemanager.Health_Down();
-        //layer ¹Ù²Ù±â 
+        //layer ë°”ê¾¸ê¸° 
         gameObject.layer = 8;
 
-        //·»´õ·¯ »ö±ò¹Ù²Ù±â
+        //ë Œë”ëŸ¬ ìƒ‰ê¹”ë°”ê¾¸ê¸°
         spriterenderer.color = new Color(1, 1, 1, 0.4f);
 
-        //Æ¨±â´Â ¹æÇâ ¼³Á¤
+        //íŠ•ê¸°ëŠ” ë°©í–¥ ì„¤ì •
         int direct = transform.position.x - targetpos.x > 0 ? 1 : -1;
 
-        //Ãæµ¹¹°¸® ±¸Çö
+        //ì¶©ëŒë¬¼ë¦¬ êµ¬í˜„
         rigid.AddForce(new Vector2(direct, 1) * 15, ForceMode2D.Impulse);
 
-        //¾Ö´Ï¸ŞÀÌ¼Ç ±¸Çö
+        //ì• ë‹ˆë©”ì´ì…˜ êµ¬í˜„
         animator.SetTrigger("damaged");
 
-        //2ÃÊµÚ ¹«Àû ÇØÁ¦
+        //2ì´ˆë’¤ ë¬´ì  í•´ì œ
         Invoke("Off_Damaged", 2);
 
 
@@ -226,13 +226,13 @@ public class Player_move : MonoBehaviour
  
     public void On_Die()
     {   
-        //Äİ¶óÀÌ´õ ²ô±â
+        //ì½œë¼ì´ë” ë„ê¸°
         capsulecollider.enabled = false;
-        //»ö±ò ¹Ù²Ù±â
+        //ìƒ‰ê¹” ë°”ê¾¸ê¸°
         spriterenderer.color = new Color(1, 1, 1, 0.4f);
-        //µÚÁı±â
+        //ë’¤ì§‘ê¸°
         spriterenderer.flipY = true;
-        //Á¡ÇÁ ¸ğ¼Ç
+        //ì í”„ ëª¨ì…˜
         rigid.AddForce(Vector2.up * 3, ForceMode2D.Impulse);
 
         Play_Sound("DIE");
@@ -240,11 +240,11 @@ public class Player_move : MonoBehaviour
 
     public void On_live()
     {
-        //Äİ¶óÀÌ´õ ²ô±â
+        //ì½œë¼ì´ë” ë„ê¸°
         capsulecollider.enabled = true;
-        //»ö±ò ¹Ù²Ù±â
+        //ìƒ‰ê¹” ë°”ê¾¸ê¸°
         spriterenderer.color = new Color(1, 1, 1, 1);
-        //µÚÁı±â
+        //ë’¤ì§‘ê¸°
         spriterenderer.flipY = false;
   
         Play_Sound("LIVE");
