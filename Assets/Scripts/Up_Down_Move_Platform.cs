@@ -14,25 +14,7 @@ public class Up_Down_Move_Platform : MonoBehaviour
     {
         transform.position = startpos.position;
         despos = endpos;
-
     }
-
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-
-    //    if (collision.transform.CompareTag("Player"))
-    //    {
-    //        collision.transform.SetParent(transform);
-            
-    //    }
-    //}
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.transform.CompareTag("Player"))
-    //    {
-    //        collision.transform.SetParent(null);
-    //    }
-    //}
 
 void FixedUpdate()
     {

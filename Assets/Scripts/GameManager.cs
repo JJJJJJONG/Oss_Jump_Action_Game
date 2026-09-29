@@ -38,7 +38,9 @@ public class GameManager : MonoBehaviour
     public GameObject UI_main_button;
     public GameObject UI_main_button2;
     public GameObject[] Buy_Button;
-  
+    public GameObject jeongmoon;
+    public GameObject jungmoon;
+    public GameObject UI_retired;
     
 
     //상점
@@ -66,29 +68,38 @@ public class GameManager : MonoBehaviour
 
     public void Next_Stage()
     {
-        
-
         if (change == 0)
-        {
+        {   
             money1.SetActive(true);
             money2.SetActive(false);
+
+            if(stageindex == 0)
+            {
+                jeongmoon.SetActive(true);
+                jungmoon.SetActive(false);
+            }
+
             //스테이지 전환
-            if (stageindex < stages.Length - 1) //스테이지 렝스가 총 3
-            {   
+            if (stageindex < stages.Length - 1) //스테이지 렝스가 총 2
+            {
                 stages[stageindex].SetActive(false);
                 stageindex++;
+                if (stageindex == 1)
+                {
+                    jeongmoon.SetActive(false);
+                    jungmoon.SetActive(true);
+                }
                 stages[stageindex].SetActive(true);
                 Player_Respawn();
 
-                UI_stage.text = "STAGE" + (stageindex + 1);
+                //UI_stage.text = "STAGE" + (stageindex + 1);
             }
+
             else //게임 클리어
-            {
+            { 
                 //시간 정지
                 Time.timeScale = 0;
-
-                Text button_TEXT = UI_restart_button.GetComponentInChildren<Text>();
-                button_TEXT.text = "Clear";
+           
                 veiw_button();
             }
 
@@ -97,25 +108,39 @@ public class GameManager : MonoBehaviour
         }
 
         else if(change == 1)
-        {   
-          
+        {
+            if (stageindex == 0)
+            {
+                jeongmoon.SetActive(true);
+                jungmoon.SetActive(false);
+            }
             //스테이지 전환
             if (stageindex < stages2.Length - 1) //스테이지 렝스가 총 3
             {
+               
                 stages2[stageindex].SetActive(false);
                 stageindex++;
+                if (stageindex == 1)
+                {
+                    jeongmoon.SetActive(false);
+                    jungmoon.SetActive(true);
+                }
                 stages2[stageindex].SetActive(true);
                 Player_Respawn();
 
-                UI_stage2.text = "STAGE" + (stageindex + 1);
+                //UI_stage2.text = "STAGE" + (stageindex + 1);
             }
             else //게임 클리어
             {
+              
+                if (stageindex == 1)
+                {
+                    jeongmoon.SetActive(false);
+                    jungmoon.SetActive(true);
+                }
+
                 //시간 정지
                 Time.timeScale = 0;
-
-                Text button_TEXT = UI_restart_button2.GetComponentInChildren<Text>();
-                button_TEXT.text = "Clear";
                 veiw_button();
             }
             totalpoint2 += stagepoint2;
@@ -180,7 +205,7 @@ public class GameManager : MonoBehaviour
         {   
             //리스폰
             if (health > 1)
-            {
+            {   
                 Player_Respawn();
             }
 
@@ -191,37 +216,42 @@ public class GameManager : MonoBehaviour
 
     void Player_Respawn()
     {
-        player_move.transform.position = new Vector3(0, 2, -1);
+        player_move.transform.position = new Vector3(0, 5, -1);
         player_move.Velocity_Zero();
     }
     void veiw_button()
     {
         if (change == 0)
-        {
-            UI_restart_button.SetActive(true);
-            UI_main_button.SetActive(true);
+        {   
+            UI_retired.SetActive(true);
         }
 
         else if (change == 1)
         {
-            UI_restart_button2.SetActive(true);
-            UI_main_button2.SetActive(true);
+            UI_retired.SetActive(true);
         }
 
     }
     public void Restart()
     {
         Time.timeScale = 1;
-        Game.SetActive(true);
+        Game.SetActive(false);
         Store.SetActive(false);
-        Main_Menu.SetActive(true);
+        Main_Menu.SetActive(false);
+        Game.SetActive(true);
+        player_move.On_live();
+        if (stageindex == 0)
+        {
+            UI_retired.SetActive(false);
+        }
+        else if(stageindex == 1)
+        {
+            UI_retired.SetActive(false);
+        }
+        Player_Respawn();
     }
 
-    public void Main_button()
-    {
-       SceneManager.LoadScene("Main Menu");
-    }
-
+ 
     public void Start_Game()
     {
         Game.SetActive(true);

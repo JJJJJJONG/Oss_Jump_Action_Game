@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class depoal : MonoBehaviour
+public class Score_F: MonoBehaviour
 {
     public float delta = 0.1f;
     public float max;

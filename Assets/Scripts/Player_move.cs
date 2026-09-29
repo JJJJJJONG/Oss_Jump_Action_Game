@@ -19,6 +19,7 @@ public class Player_move : MonoBehaviour
     public AudioClip audioItem;
     public AudioClip audioDie;
     public AudioClip audioFinish;
+    public AudioClip audiolive;
 
     AudioSource audioSource;
 
@@ -237,6 +238,18 @@ public class Player_move : MonoBehaviour
         Play_Sound("DIE");
     }
 
+    public void On_live()
+    {
+        //콜라이더 끄기
+        capsulecollider.enabled = true;
+        //색깔 바꾸기
+        spriterenderer.color = new Color(1, 1, 1, 1);
+        //뒤집기
+        spriterenderer.flipY = false;
+  
+        Play_Sound("LIVE");
+    }
+
     public void Velocity_Zero()
     {
         rigid.velocity = Vector2.zero;
@@ -263,6 +276,9 @@ public class Player_move : MonoBehaviour
                 break;
             case "FINISH": //
                 audioSource.clip = audioFinish;
+                break;
+            case "LIVE":
+                audioSource.clip = audiolive;
                 break;
         }
 
