@@ -9,6 +9,7 @@ public class Enemy_move : MonoBehaviour
     Animator animator;
     CapsuleCollider2D capsulecollider;
     public int nextmove;
+    bool is_dead;
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -21,6 +22,10 @@ public class Enemy_move : MonoBehaviour
 
     void FixedUpdate()
     {
+        //밟혀서 죽은 뒤에는 이동/방향전환을 하지 않음
+        if (is_dead)
+            return;
+
         //움직임
         rigid.velocity = new Vector2(nextmove, rigid.velocity.y);
 
@@ -58,12 +63,14 @@ public class Enemy_move : MonoBehaviour
     {
         nextmove *= -1;
         spriterenderer.flipX = nextmove == 1;
-        CancelInvoke();
+        CancelInvoke("Think");
         Invoke("Think", 2); 
     }
 
     public void Enemy_Damaged()
     {   
+        is_dead = true;
+        CancelInvoke("Think");
 
         //충돌 후 밀림 방지
         gameObject.layer = 8;

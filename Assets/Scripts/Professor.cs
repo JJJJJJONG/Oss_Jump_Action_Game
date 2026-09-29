@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -15,7 +14,7 @@ public class Professor : MonoBehaviour
     private float zeroy;
     private float firstspeed;
 
-    TilemapCollider2D collider;
+    TilemapCollider2D tile_collider;
 
     // Start is called before the first frame update
     void Start()
@@ -23,12 +22,13 @@ public class Professor : MonoBehaviour
         zerox = transform.localPosition.x;
         zeroy = transform.localPosition.y;
         firstspeed = Speed;
-        collider = GetComponent<TilemapCollider2D>();
+        tile_collider = GetComponent<TilemapCollider2D>();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player" && collision.transform.localPosition.y > transform.localPosition.y)
+        //플레이어와 발판은 부모가 달라 localPosition끼리 비교하면 안 됨 -> 콜라이더 경계로 "위에서 밟았는지" 판단
+        if (collision.gameObject.tag == "Player" && collision.collider.bounds.min.y >= tile_collider.bounds.max.y - 0.1f)
         {
             a = Upspeed;
         }
@@ -41,7 +41,7 @@ public class Professor : MonoBehaviour
         float r2 = a + transform.localPosition.y;
         if (transform.localPosition.x == zerox && transform.localPosition.y == zeroy)
         {
-            collider.enabled = true;
+            tile_collider.enabled = true;
         }
         if (a > 0)
         {
@@ -54,26 +54,34 @@ public class Professor : MonoBehaviour
         }
         if (Speed == 0 && a == 0)
         {
-            Invoke("breakplaform", 5f);
+            Break_Later();
         }
         if (Speed > 0)
         {
             if (transform.localPosition.x > maxrange)
             {
-                Invoke("breakplaform", 5f);
+                Break_Later();
             }
         }
         else if (Speed < 0)
         {
             if (transform.localPosition.x < maxrange)
             {
-                Invoke("breakplaform", 5f);
+                Break_Later();
             }
         }
     }
+
+    //FixedUpdate마다 Invoke가 새로 쌓여서 초기화가 수십 번 연달아 일어나던 문제 방지
+    void Break_Later()
+    {
+        if (!IsInvoking("breakplaform"))
+            Invoke("breakplaform", 5f);
+    }
+
     void breakplaform()
     {
-        collider.enabled = false;
+        tile_collider.enabled = false;
         Speed = firstspeed;
         transform.localPosition = new Vector2(zerox, zeroy);
         a = 0;

@@ -22,6 +22,7 @@ public class Player_move : MonoBehaviour
     public AudioClip audiolive;
 
     AudioSource audioSource;
+    bool is_dead;
 
     void Awake()
     {
@@ -34,6 +35,10 @@ public class Player_move : MonoBehaviour
 
     void Update()
     {
+        //죽은 뒤에는 조작 불가
+        if (is_dead)
+            return;
+
         //점프
         if (Input.GetButtonDown("Jump") && !animator.GetBool("is_jump"))
         {
@@ -70,6 +75,9 @@ public class Player_move : MonoBehaviour
     }
     void FixedUpdate()
     {
+        if (is_dead)
+            return;
+
         //움직임 속도
         float h = Input.GetAxisRaw("Horizontal");
 
@@ -142,15 +150,15 @@ public class Player_move : MonoBehaviour
 
             bool is_gold = collision.gameObject.name.Contains("gold");
             if (is_gold)
-                gamemanager.stagepoint += 200;
+                gamemanager.Add_Point(200);
 
             bool is_silver = collision.gameObject.name.Contains("silver");
             if (is_silver)
-                gamemanager.stagepoint += 100;
+                gamemanager.Add_Point(100);
 
             bool is_bronze = collision.gameObject.name.Contains("bronze");
             if (is_bronze)
-                gamemanager.stagepoint += 50;
+                gamemanager.Add_Point(50);
 
             //동전 사라지게
             collision.gameObject.SetActive(false);
@@ -170,7 +178,7 @@ public class Player_move : MonoBehaviour
     void On_Attack(Transform enemy)
     {
         //점수
-        gamemanager.stagepoint += 100;
+        gamemanager.Add_Point(100);
 
         //플레이어 점프 물리
         rigid.AddForce(Vector2.up * 15, ForceMode2D.Impulse);
@@ -197,6 +205,9 @@ public class Player_move : MonoBehaviour
 
         //생명력
         gamemanager.Health_Down();
+        //마지막 생명이었다면 죽음 처리만 하고 끝
+        if (is_dead)
+            return;
         //layer 바꾸기 
         gameObject.layer = 8;
 
@@ -226,6 +237,9 @@ public class Player_move : MonoBehaviour
  
     public void On_Die()
     {   
+        is_dead = true;
+        //피격 무적 해제 예약이 남아 있으면 죽은 캐릭터 색이 다시 돌아옴
+        CancelInvoke("Off_Damaged");
         //콜라이더 끄기
         capsulecollider.enabled = false;
         //색깔 바꾸기
@@ -240,6 +254,9 @@ public class Player_move : MonoBehaviour
 
     public void On_live()
     {
+        is_dead = false;
+        gameObject.layer = 7;
+        animator.SetBool("is_jump", false);
         //콜라이더 끄기
         capsulecollider.enabled = true;
         //색깔 바꾸기

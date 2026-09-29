@@ -1,12 +1,8 @@
-﻿using Microsoft.Unity.VisualStudio.Editor;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Timeline;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
 
 public class GameManager : MonoBehaviour
@@ -53,9 +49,38 @@ public class GameManager : MonoBehaviour
     public GameObject money1;
     public GameObject money2;
 
+    //재시작 시 체력/하트 UI 복구용
+    int max_health;
+    Color heart_color = Color.white;
+
     private void Awake()
     {
         audiosource = GetComponent<AudioSource>();
+        max_health = health;
+        if (UI_health.Length > 0)
+            heart_color = UI_health[0].color;
+    }
+
+    //현재 캐릭터(change)에 맞는 점수/돈에 더하기
+    public void Add_Point(int point)
+    {
+        if (change == 0)
+            stagepoint += point;
+        else
+            stagepoint2 += point;
+    }
+
+    int Current_Money()
+    {
+        return change == 0 ? totalpoint : totalpoint2;
+    }
+
+    void Spend_Money(int price)
+    {
+        if (change == 0)
+            totalpoint -= price;
+        else
+            totalpoint2 -= price;
     }
 
     private void Update()
@@ -240,15 +265,19 @@ public class GameManager : MonoBehaviour
         Main_Menu.SetActive(false);
         Game.SetActive(true);
         player_move.On_live();
-        if (stageindex == 0)
-        {
-            UI_retired.SetActive(false);
-        }
-        else if(stageindex == 1)
-        {
-            UI_retired.SetActive(false);
-        }
+        UI_retired.SetActive(false);
+        //체력과 하트 UI를 되돌리지 않으면 재시작 직후 한 번만 맞아도 다시 죽음
+        Reset_Health();
         Player_Respawn();
+    }
+
+    void Reset_Health()
+    {
+        health = max_health;
+        foreach (Image heart in UI_health)
+            heart.color = heart_color;
+        foreach (Image heart in UI_health2)
+            heart.color = heart_color;
     }
 
  
@@ -286,14 +315,17 @@ public class GameManager : MonoBehaviour
     {
 
         int price = item_price[index];
-       
-        if (price > totalpoint)
+
+        //캐릭터는 한 번만 구매 가능 (두 번 사면 change가 2가 되어 스테이지/체력 처리가 멈춤)
+        bool already_owned = index == 0 && change != 0;
+
+        //캐릭터를 바꾼 뒤에는 totalpoint2가 실제 보유 금액
+        if (price > Current_Money() || already_owned)
         {
-            Debug.Log("실행됨.");
             Play_Sound(1);
         }
 
-        else if (price <= totalpoint)
+        else
         {
             //구입 완료 창 UI
 
@@ -303,10 +335,11 @@ public class GameManager : MonoBehaviour
                 Play_Sound(0);
                 //구현
                 change_UI();
-                health += 1;
-                change += 1;
-               totalpoint = totalpoint - item_price[0];
+                max_health += 1;
+                change = 1;
+                totalpoint = totalpoint - item_price[0];
                 totalpoint2 = totalpoint;
+                Reset_Health();
                 money1.SetActive(false);
                 money2.SetActive(true);
             }
@@ -315,26 +348,26 @@ public class GameManager : MonoBehaviour
                 Buy_Button[1].SetActive(true);
                 Play_Sound(0);
                 player_move.maxspeed += 2;
-                totalpoint = totalpoint - item_price[1];
+                Spend_Money(item_price[1]);
             }
             else if (index == 2)
             {
                 Buy_Button[2].SetActive(true);
                 Play_Sound(0); 
                 player_move.jumppower += 2;
-                totalpoint = totalpoint - item_price[2];
+                Spend_Money(item_price[2]);
             }
             else if (index == 3)//과잠
             {
                 Buy_Button[3].SetActive(true);
                 Play_Sound(0);
-                totalpoint = totalpoint - item_price[3];
+                Spend_Money(item_price[3]);
             }
             else if(index == 4)
             {
                 Buy_Button[4].SetActive(true);
                 Play_Sound(0);
-                totalpoint = totalpoint - item_price[4];
+                Spend_Money(item_price[4]);
             }
      
         }
