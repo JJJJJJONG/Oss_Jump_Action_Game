@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
     //재시작 시 체력/하트 UI 복구용
     int max_health;
     Color heart_color = Color.white;
+    bool is_clear;
 
     private void Awake()
     {
@@ -59,6 +60,13 @@ public class GameManager : MonoBehaviour
         max_health = health;
         if (UI_health.Length > 0)
             heart_color = UI_health[0].color;
+
+        //캐릭터를 바꿔도 같은 스테이지 구성을 사용
+        if (stages2.Length == 0)
+            stages2 = stages;
+        Show_Stage();
+        //Retry 버튼이 게임 시작부터 떠 있던 문제
+        Hide_Retry_Buttons();
     }
 
     //현재 캐릭터(change)에 맞는 점수/돈에 더하기
@@ -91,88 +99,61 @@ public class GameManager : MonoBehaviour
         UI_money2.text = totalpoint2.ToString();
     }
 
+    GameObject[] Current_Stages()
+    {
+        return change == 0 ? stages : stages2;
+    }
+
+    //현재 스테이지만 켜고 배경(1: 정문, 2: 중문)과 스테이지 표시를 맞춤
+    void Show_Stage()
+    {
+        foreach (GameObject stage in stages)
+            stage.SetActive(false);
+        foreach (GameObject stage in stages2)
+            stage.SetActive(false);
+        Current_Stages()[stageindex].SetActive(true);
+
+        if (jeongmoon != null) jeongmoon.SetActive(stageindex == 0);
+        if (jungmoon != null) jungmoon.SetActive(stageindex == 1);
+        if (UI_stage != null) UI_stage.text = "STAGE " + (stageindex + 1);
+        if (UI_stage2 != null) UI_stage2.text = "STAGE " + (stageindex + 1);
+    }
+
     public void Next_Stage()
     {
+        GameObject[] current = Current_Stages();
+
         if (change == 0)
-        {   
+        {
             money1.SetActive(true);
             money2.SetActive(false);
+        }
 
-            if(stageindex == 0)
-            {
-                jeongmoon.SetActive(true);
-                jungmoon.SetActive(false);
-            }
+        //스테이지 전환
+        if (stageindex < current.Length - 1)
+        {
+            stageindex++;
+            Show_Stage();
+            Player_Respawn();
+        }
+        else //게임 클리어
+        {
+            is_clear = true;
+            //시간 정지
+            Time.timeScale = 0;
+            veiw_button();
+        }
 
-            //스테이지 전환
-            if (stageindex < stages.Length - 1) //스테이지 렝스가 총 2
-            {
-                stages[stageindex].SetActive(false);
-                stageindex++;
-                if (stageindex == 1)
-                {
-                    jeongmoon.SetActive(false);
-                    jungmoon.SetActive(true);
-                }
-                stages[stageindex].SetActive(true);
-                Player_Respawn();
-
-                //UI_stage.text = "STAGE" + (stageindex + 1);
-            }
-
-            else //게임 클리어
-            { 
-                //시간 정지
-                Time.timeScale = 0;
-           
-                veiw_button();
-            }
-
+        if (change == 0)
+        {
             totalpoint += stagepoint;
             stagepoint = 0;
         }
-
-        else if(change == 1)
+        else
         {
-            if (stageindex == 0)
-            {
-                jeongmoon.SetActive(true);
-                jungmoon.SetActive(false);
-            }
-            //스테이지 전환
-            if (stageindex < stages2.Length - 1) //스테이지 렝스가 총 3
-            {
-               
-                stages2[stageindex].SetActive(false);
-                stageindex++;
-                if (stageindex == 1)
-                {
-                    jeongmoon.SetActive(false);
-                    jungmoon.SetActive(true);
-                }
-                stages2[stageindex].SetActive(true);
-                Player_Respawn();
-
-                //UI_stage2.text = "STAGE" + (stageindex + 1);
-            }
-            else //게임 클리어
-            {
-              
-                if (stageindex == 1)
-                {
-                    jeongmoon.SetActive(false);
-                    jungmoon.SetActive(true);
-                }
-
-                //시간 정지
-                Time.timeScale = 0;
-                veiw_button();
-            }
             totalpoint2 += stagepoint2;
             stagepoint2 = 0;
         }
-
-
     }
 
     public void Health_Down()
@@ -244,28 +225,36 @@ public class GameManager : MonoBehaviour
         player_move.transform.position = new Vector3(0, 5, -1);
         player_move.Velocity_Zero();
     }
+    //죽거나 클리어했을 때 현재 캐릭터 UI의 Retry 버튼 표시
     void veiw_button()
     {
-        if (change == 0)
-        {   
-            UI_retired.SetActive(true);
-        }
-
-        else if (change == 1)
-        {
-            UI_retired.SetActive(true);
-        }
-
+        GameObject button = change == 0 ? UI_restart_button : UI_restart_button2;
+        if (button != null)
+            button.SetActive(true);
     }
+
+    void Hide_Retry_Buttons()
+    {
+        if (UI_restart_button != null) UI_restart_button.SetActive(false);
+        if (UI_restart_button2 != null) UI_restart_button2.SetActive(false);
+        if (UI_retired != null) UI_retired.SetActive(false);
+    }
+
     public void Restart()
     {
         Time.timeScale = 1;
-        Game.SetActive(false);
         Store.SetActive(false);
         Main_Menu.SetActive(false);
         Game.SetActive(true);
         player_move.On_live();
-        UI_retired.SetActive(false);
+        Hide_Retry_Buttons();
+        //마지막 스테이지를 클리어한 뒤에는 처음 스테이지부터 다시 시작
+        if (is_clear)
+        {
+            is_clear = false;
+            stageindex = 0;
+            Show_Stage();
+        }
         //체력과 하트 UI를 되돌리지 않으면 재시작 직후 한 번만 맞아도 다시 죽음
         Reset_Health();
         Player_Respawn();

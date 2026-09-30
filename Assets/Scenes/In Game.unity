@@ -1052,7 +1052,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &57948720
 Transform:
   m_ObjectHideFlags: 0
@@ -1108,7 +1108,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -10
   m_Sprite: {fileID: 21300000, guid: 94ef6fa9e91f0b543a66ede1d83a6ebe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2386,7 +2386,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &149352605
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7873,6 +7873,7 @@ MonoBehaviour:
   player_move: {fileID: 849654284}
   stages:
   - {fileID: 160732377}
+  - {fileID: 1954776419}
   stages2: []
   UI_game:
   - {fileID: 733240274}
@@ -7903,9 +7904,9 @@ MonoBehaviour:
   - {fileID: 864230488}
   - {fileID: 1143690512}
   - {fileID: 519669695}
-  jeongmoon: {fileID: 0}
-  jungmoon: {fileID: 0}
-  UI_retired: {fileID: 0}
+  jeongmoon: {fileID: 57948719}
+  jungmoon: {fileID: 1545804409}
+  UI_retired: {fileID: 149352604}
   store_page:
   - {fileID: 564997362}
   - {fileID: 1888510559}
@@ -19676,7 +19677,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -10
   m_Sprite: {fileID: 21300000, guid: e5314cfc939dd754f9fe78fb5349db8f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -22995,7 +22996,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1954776420
 Transform:
   m_ObjectHideFlags: 0
